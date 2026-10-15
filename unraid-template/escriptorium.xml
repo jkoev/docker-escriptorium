@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>escriptorium</Name>
+  <Repository>ghcr.io/jkoev/docker-escriptorium:latest</Repository>
+  <Registry>https://github.com/jkoev/docker-escriptorium/pkgs/container/docker-escriptorium</Registry>
+  <Network>bridge</Network>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/jkoev/docker-escriptorium/issues</Support>
+  <Project>https://github.com/jkoev/docker-escriptorium</Project>
+  <Overview>Self-hosted eScriptorium (handwritten text recognition / OCR) with kraken, packaged as a single all-in-one container (postgres+redis+nginx+django+celery+daphne via supervisord). Fork of the abandoned usegalaxy-eu/docker-escriptorium, updated to eScriptorium v26.07 and kraken 7.1.</Overview>
+  <Category>Productivity: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8080]/</WebUI>
+  <TemplateURL/>
+  <Icon>https://gitlab.com/scripta/escriptorium/-/raw/main/front/src/assets/favicon.ico</Icon>
+  <ExtraParams>--runtime=nvidia --shm-size=3g</ExtraParams>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="WebUI Port" Target="80" Default="8080" Mode="tcp" Description="nginx / web UI" Type="Port" Display="always" Required="true" Mask="false">8080</Config>
+  <Config Name="Flower Port" Target="5555" Default="5555" Mode="tcp" Description="Celery Flower monitoring UI" Type="Port" Display="always" Required="false" Mask="false">5555</Config>
+  <Config Name="Media" Target="/home/escriptorium/escriptorium/app/media" Default="/mnt/user/appdata/escriptorium/media" Mode="rw" Description="Uploaded documents/images" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/escriptorium/media</Config>
+  <Config Name="Database" Target="/var/lib/postgresql/15/main" Default="/mnt/user/appdata/escriptorium/db" Mode="rw" Description="PostgreSQL 15 data directory" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/escriptorium/db</Config>
+  <Config Name="POSTGRES_DB" Target="POSTGRES_DB" Default="escriptorium" Mode="" Description="Database name" Type="Variable" Display="always" Required="true" Mask="false">escriptorium</Config>
+  <Config Name="POSTGRES_USER" Target="POSTGRES_USER" Default="escriptorium" Mode="" Description="Database user" Type="Variable" Display="always" Required="true" Mask="false">escriptorium</Config>
+  <Config Name="POSTGRES_PASSWORD" Target="POSTGRES_PASSWORD" Default="escriptorium" Mode="" Description="Database password" Type="Variable" Display="always" Required="true" Mask="true">escriptorium</Config>
+  <Config Name="SECRET_KEY" Target="SECRET_KEY" Default="" Mode="" Description="Django secret key: set this to a long random string before first start" Type="Variable" Display="always" Required="true" Mask="true"></Config>
+  <Config Name="DOMAIN" Target="DOMAIN" Default="localhost" Mode="" Description="Hostname/IP used in links, e.g. 192.168.1.4" Type="Variable" Display="always" Required="false" Mask="false">192.168.1.4</Config>
+  <Config Name="CSRF_TRUSTED_ORIGINS" Target="CSRF_TRUSTED_ORIGINS" Default="http://localhost:8080" Mode="" Description="Comma separated list, must include the URL you access the UI from" Type="Variable" Display="always" Required="true" Mask="false">http://192.168.1.4:8080</Config>
+  <Config Name="KRAKEN_TRAINING_DEVICE" Target="KRAKEN_TRAINING_DEVICE" Default="cpu" Mode="" Description="cpu or cuda:0 (needs an NVIDIA GPU passed through)" Type="Variable" Display="always" Required="false" Mask="false">cuda:0</Config>
+  <Config Name="KRAKEN_INFERENCE_DEVICE" Target="KRAKEN_INFERENCE_DEVICE" Default="cpu" Mode="" Description="cpu or cuda:0 (used for D-FINE layout inference)" Type="Variable" Display="always" Required="false" Mask="false">cuda:0</Config>
+  <Config Name="NVIDIA_VISIBLE_DEVICES" Target="NVIDIA_VISIBLE_DEVICES" Default="all" Mode="" Description="Which GPUs to expose (requires the Nvidia-Driver plugin)" Type="Variable" Display="advanced" Required="false" Mask="false">all</Config>
+  <Config Name="NVIDIA_DRIVER_CAPABILITIES" Target="NVIDIA_DRIVER_CAPABILITIES" Default="all" Mode="" Description="" Type="Variable" Display="advanced" Required="false" Mask="false">all</Config>
+  <Config Name="TZ" Target="TZ" Default="UTC" Mode="" Description="Timezone" Type="Variable" Display="advanced" Required="false" Mask="false">Europe/Oslo</Config>
+</Container>
