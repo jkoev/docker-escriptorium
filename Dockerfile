@@ -88,7 +88,10 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY django-init.sh /django-init.sh
 COPY nginx.conf /etc/nginx/sites-available/default
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh /django-init.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh /django-init.sh && \
+    # useradd's default home dir mode (0700) blocks nginx (runs as www-data)
+    # from traversing into /home/escriptorium to serve static/media files
+    chmod 755 /home/escriptorium
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
     CMD curl -f http://localhost/health || exit 1

@@ -13,7 +13,7 @@
   <WebUI>http://[IP]:[PORT:8080]/</WebUI>
   <TemplateURL/>
   <Icon>https://gitlab.com/scripta/escriptorium/-/raw/main/front/src/assets/favicon.ico</Icon>
-  <ExtraParams>--runtime=nvidia --shm-size=3g</ExtraParams>
+  <ExtraParams>--gpus all --shm-size=3g --pids-limit=2048</ExtraParams>
   <DateInstalled/>
   <DonateText/>
   <DonateLink/>
