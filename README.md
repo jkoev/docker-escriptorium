@@ -46,6 +46,15 @@ docker run -d --name escriptorium \
 Drop `--gpus all` / `-e KRAKEN_*_DEVICE` if you don't have an NVIDIA GPU
 passed through (they default to `cpu`).
 
+**GPU compatibility note:** kraken 7.1 pulls in a recent PyTorch build whose
+bundled cuDNN requires compute capability **>= 7.5** (Turing or newer: RTX
+20xx/30xx/40xx, T4, A-series, etc). Older cards — Pascal and earlier (GTX
+10xx, Quadro Pxxx, compute capability < 7.5) — will fail segmentation/OCR
+with `RuntimeError: cuDNN version ... is not compatible with devices with SM
+< 7.5`, and the task silently reports "done" with blank transcriptions
+instead of an error. If you hit that, set both `KRAKEN_TRAINING_DEVICE` and
+`KRAKEN_INFERENCE_DEVICE` to `cpu` and drop `--gpus all`.
+
 ## Unraid
 
 Use the native Docker tab — no Community Applications/compose plugin needed:

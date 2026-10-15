@@ -13,7 +13,11 @@
   <WebUI>http://[IP]:[PORT:8080]/</WebUI>
   <TemplateURL/>
   <Icon>https://gitlab.com/scripta/escriptorium/-/raw/main/front/src/assets/favicon.ico</Icon>
-  <ExtraParams>--gpus all --shm-size=3g --pids-limit=2048</ExtraParams>
+  <!-- Add --gpus all here if your GPU has compute capability >= 7.5 (Turing or newer: RTX 20xx+, T4, A-series, etc).
+       Pascal and older (GTX 10xx, Quadro Pxxx, compute capability < 7.5) are NOT supported by the
+       cuDNN version bundled with current PyTorch/kraken and will fail segmentation/OCR with
+       "cuDNN version ... is not compatible with devices with SM < 7.5" - use cpu in that case. -->
+  <ExtraParams>--shm-size=3g --pids-limit=2048</ExtraParams>
   <DateInstalled/>
   <DonateText/>
   <DonateLink/>
@@ -28,8 +32,8 @@
   <Config Name="SECRET_KEY" Target="SECRET_KEY" Default="" Mode="" Description="Django secret key: set this to a long random string before first start" Type="Variable" Display="always" Required="true" Mask="true"></Config>
   <Config Name="DOMAIN" Target="DOMAIN" Default="localhost" Mode="" Description="Hostname/IP used in links, e.g. 192.168.1.4" Type="Variable" Display="always" Required="false" Mask="false">192.168.1.4</Config>
   <Config Name="CSRF_TRUSTED_ORIGINS" Target="CSRF_TRUSTED_ORIGINS" Default="http://localhost:8080" Mode="" Description="Comma separated list, must include the URL you access the UI from" Type="Variable" Display="always" Required="true" Mask="false">http://192.168.1.4:8080</Config>
-  <Config Name="KRAKEN_TRAINING_DEVICE" Target="KRAKEN_TRAINING_DEVICE" Default="cpu" Mode="" Description="cpu or cuda:0 (needs an NVIDIA GPU passed through)" Type="Variable" Display="always" Required="false" Mask="false">cuda:0</Config>
-  <Config Name="KRAKEN_INFERENCE_DEVICE" Target="KRAKEN_INFERENCE_DEVICE" Default="cpu" Mode="" Description="cpu or cuda:0 (used for D-FINE layout inference)" Type="Variable" Display="always" Required="false" Mask="false">cuda:0</Config>
+  <Config Name="KRAKEN_TRAINING_DEVICE" Target="KRAKEN_TRAINING_DEVICE" Default="cpu" Mode="" Description="cpu or cuda:0 - GPU needs compute capability >= 7.5, see ExtraParams note" Type="Variable" Display="always" Required="false" Mask="false">cpu</Config>
+  <Config Name="KRAKEN_INFERENCE_DEVICE" Target="KRAKEN_INFERENCE_DEVICE" Default="cpu" Mode="" Description="cpu or cuda:0 (used for D-FINE layout inference)" Type="Variable" Display="always" Required="false" Mask="false">cpu</Config>
   <Config Name="NVIDIA_VISIBLE_DEVICES" Target="NVIDIA_VISIBLE_DEVICES" Default="all" Mode="" Description="Which GPUs to expose (requires the Nvidia-Driver plugin)" Type="Variable" Display="advanced" Required="false" Mask="false">all</Config>
   <Config Name="NVIDIA_DRIVER_CAPABILITIES" Target="NVIDIA_DRIVER_CAPABILITIES" Default="all" Mode="" Description="" Type="Variable" Display="advanced" Required="false" Mask="false">all</Config>
   <Config Name="TZ" Target="TZ" Default="UTC" Mode="" Description="Timezone" Type="Variable" Display="advanced" Required="false" Mask="false">Europe/Oslo</Config>
