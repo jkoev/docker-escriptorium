@@ -55,6 +55,15 @@ with `RuntimeError: cuDNN version ... is not compatible with devices with SM
 instead of an error. If you hit that, set both `KRAKEN_TRAINING_DEVICE` and
 `KRAKEN_INFERENCE_DEVICE` to `cpu` and drop `--gpus all`.
 
+**Running CPU-only permanently?** The image still ships the default
+CUDA-enabled PyTorch wheel (several GB of bundled `nvidia-*`/cuDNN libraries)
+even when `KRAKEN_*_DEVICE=cpu`, so a GPU can be added later without a
+rebuild. If you know you'll never use a GPU on this install, you can shrink
+the image by installing the CPU-only wheel from
+https://download.pytorch.org/whl/cpu in the Dockerfile before the
+`requirements.txt` install — not done by default here to keep the
+GPU option open.
+
 ## Unraid
 
 Use the native Docker tab — no Community Applications/compose plugin needed:

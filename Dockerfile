@@ -78,6 +78,13 @@ RUN git clone --depth 1 --branch ${ESCRIPTORIUM_VERSION} \
 
 COPY --from=frontend /src/front/dist /home/escriptorium/escriptorium/front/dist
 
+# requirements.txt pulls in the default (CUDA-enabled) PyTorch wheel, which
+# bundles the full nvidia-*/cuDNN stack (several GB) even if KRAKEN_*_DEVICE
+# is set to cpu (see README's GPU compatibility note - GPUs with compute
+# capability < 7.5, e.g. Pascal, can't use it anyway). For a CPU-only
+# deployment you can shrink the image by installing torch from
+# https://download.pytorch.org/whl/cpu instead before the requirements.txt
+# install, but that permanently rules out using a GPU without rebuilding.
 RUN pip install --upgrade pip --no-cache-dir && \
     pip install --no-cache-dir -r /home/escriptorium/escriptorium/app/requirements.txt && \
     pip install --no-cache-dir flower psycopg2-binary && \
